@@ -1,1 +1,1 @@
-export const {port} = process.env;
+export const { port, MONGODB_URI } = process.env;
