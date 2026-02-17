@@ -1,7 +1,8 @@
 import express from "express";
+import authRouter from "./src/routes/auth.route.js";
 
 export const app = express();
 
-app.get("/", (req, res) => {
-  console.log("Welcome to my app");
-});
+app.use(express.json());
+
+app.use("/api/auth/", authRouter);
