@@ -1,18 +1,26 @@
 import jwt from "jsonwebtoken";
 import { secretKey } from "../configs/env.js";
+import User from "../schema/user.model.js";
 
-export const authMiddleware = (req, res, next) => {
+export const authMiddleware = async (req, res, next) => {
   try {
-    const token = req.cookies.token;
+    const { token } = req.cookies;
 
     if (!token) {
       return res.status(401).json({ message: "Not authenticated" });
     }
 
-    const decoded = jwt.verify(token, secretKey);
+    const decoded = await jwt.verify(token, secretKey);
+    // extract info
+    const { userId } = decoded;
+    const user = await User.findById(userId);
 
-    req.user = decoded;
-    console.log(decoded);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    req.user = user;
+
     next();
   } catch (error) {
     console.log(error);
