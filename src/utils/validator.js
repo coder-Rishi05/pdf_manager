@@ -1,9 +1,9 @@
 import validator from "validator";
 
-export const validateSignUpData = (req, res) => {
+export const validateSignUpData = (req) => {
   const { firstName, lastName, email, password } = req.body;
 
-  if (!firstName || !lastName) {
+  if (!firstName || !lastName || !email || !password) {
     throw new Error("all feilds are mandatory");
   }
 
@@ -12,5 +12,16 @@ export const validateSignUpData = (req, res) => {
   }
   if (!validator.isStrongPassword(password)) {
     throw new Error("password is not strong enough enter a strong password");
+  }
+};
+
+export const validateLoginData = (req) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    throw new Error("all feilds are mandatory");
+  }
+  if (!validator.isEmail(email)) {
+    throw new Error(" email is not valid Enter a valid email");
   }
 };
