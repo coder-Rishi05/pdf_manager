@@ -25,3 +25,10 @@ export const validateLoginData = (req) => {
     throw new Error(" email is not valid Enter a valid email");
   }
 };
+
+// export const validatePost = (req) =>{
+//   const {imgUrl,caption} = req.body;
+
+//   if()
+
+// }
