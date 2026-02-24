@@ -22,25 +22,27 @@ export const loggedInUser = async (req, res) => {
 };
 
 export const createPost = async (req, res) => {
-  try {
-    const { imgUrl, caption } = req.body;
+  // try {
+  console.log(req.body);
+  console.log(req.file);
+  res.end();
+  //   const { imgUrl, caption } = req.body;
 
-    if (!imgUrl || !caption) {
-      return res.status(400).json({ message: "please provide valid data" });
-    }
+  //   if (!imgUrl || !caption) {
+  //     return res.status(400).json({ message: "please provide valid data" });
+  //   }
+  //   const post = await Post.create({
+  //     imgUrl,
+  //     caption,
+  //   });
 
-    const post = await Post.create({
-      imgUrl,
-      caption,
-    });
-
-    return res
-      .status(201)
-      .json({ message: "post created sucessfully", data: post });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Something went wrong" });
-  }
+  //   return res
+  //     .status(201)
+  //     .json({ message: "post created sucessfully", data: post });
+  // } catch (error) {
+  //   console.log(error);
+  //   return res.status(500).json({ message: "Something went wrong" });
+  // }
 };
 
 export const getPost = async (req, res) => {
