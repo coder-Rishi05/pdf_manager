@@ -1,5 +1,6 @@
 import User from "../schema/user.model.js";
 import Post from "../schema/post.model.js";
+import uploadFile from "../services/storage.service.js";
 
 export const loggedInUser = async (req, res) => {
   try {
@@ -22,27 +23,23 @@ export const loggedInUser = async (req, res) => {
 };
 
 export const createPost = async (req, res) => {
-  // try {
-  console.log(req.body);
-  console.log(req.file);
-  res.end();
-  //   const { imgUrl, caption } = req.body;
+  try {
+    console.log(req.body);
+    console.log(req.file);
 
-  //   if (!imgUrl || !caption) {
-  //     return res.status(400).json({ message: "please provide valid data" });
-  //   }
-  //   const post = await Post.create({
-  //     imgUrl,
-  //     caption,
-  //   });
+    const file = await uploadFile(req.file.buffer);
 
-  //   return res
-  //     .status(201)
-  //     .json({ message: "post created sucessfully", data: post });
-  // } catch (error) {
-  //   console.log(error);
-  //   return res.status(500).json({ message: "Something went wrong" });
-  // }
+    const post = await Post.create({
+      imgUrl: file.url,
+      caption: req.body.caption,
+    });
+    return res
+      .status(201)
+      .json({ message: "post created sucessfully", data: post });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong" });
+  }
 };
 
 export const getPost = async (req, res) => {
