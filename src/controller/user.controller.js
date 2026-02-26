@@ -44,7 +44,7 @@ export const createPost = async (req, res) => {
 
 export const getPost = async (req, res) => {
   try {
-    const post = await Post.find().select("-_id");
+    const post = await Post.find();
     return res
       .status(200)
       .json({ message: "post fetched sucessfully", data: post });
