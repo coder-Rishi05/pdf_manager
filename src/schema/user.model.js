@@ -41,6 +41,9 @@ const userSchema = mongoose.Schema(
     expiresAt: {
       type: Date,
       default: null,
+      index: {
+        expires: 0,
+      },
     },
   },
   { timestamps: true },

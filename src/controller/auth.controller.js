@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { validateLoginData, validateSignUpData } from "../utils/validator.js";
 import jwt from "jsonwebtoken";
 import { secretKey } from "../configs/env.js";
+import { v4 as uuidv4 } from "uuid";
 
 export const signup = async (req, res) => {
   try {
@@ -95,12 +96,43 @@ export const logout = async (req, res) => {
   }
 };
 
-
-export const guestUser = async(req,res)=>{
+export const guestUser = async (req, res) => {
   try {
-    
+    const guestId = uuidv4().slice(0, 8);
+    const name = `Guest_${guestId}`;
+    const lastname = `last_${guestId}`;
+    const email = `guest_${guestId}@temp.com`;
+    const password = uuidv4();
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    const guestUser = await User.create({
+      firstName: name,
+      lastName: lastname,
+      email: email,
+      password: hashedPassword,
+      isGuest: true,
+      expiresAt: expiresAt,
+    });
+
+    const token = jwt.sign({ userId: guestUser._id, email: email }, secretKey, {
+      expiresIn: "1d",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "strict",
+    });
+
+    res.status(201).json({
+      message: "guest user created successfully",
+      token,
+      user: { name, isGuest: true, guestUser },
+    });
   } catch (error) {
-    console.error("server error",error);
-    return res.status(501).json({message:"Server error"})
+    console.error("server error", error);
+    return res.status(501).json({ message: "Server error" });
   }
-}
+};
