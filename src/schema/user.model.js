@@ -22,6 +22,9 @@ const userSchema = mongoose.Schema(
       required: true,
       select: false,
     },
+    photoUrl: {
+      type: String,
+    },
     role: {
       type: String,
       enum: ["user", "admin"],
@@ -30,6 +33,14 @@ const userSchema = mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    isGuest: {
+      type: Boolean,
+      default: false,
+    },
+    expiresAt: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true },

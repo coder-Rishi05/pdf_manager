@@ -58,8 +58,8 @@ export const Login = async (req, res) => {
 
     // check active or not
 
-    if(!user.isActive){
-      return res.status(401).json("User blocked")
+    if (!user.isActive) {
+      return res.status(401).json("User blocked");
     }
 
     //    setting up jwt token
@@ -82,7 +82,10 @@ export const Login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "strict",
+    });
     res.status(200).json({
       message: "User logged out successfully",
     });
@@ -91,3 +94,13 @@ export const logout = async (req, res) => {
     res.status(500).json({ message: "server error", error });
   }
 };
+
+
+export const guestUser = async(req,res)=>{
+  try {
+    
+  } catch (error) {
+    console.error("server error",error);
+    return res.status(501).json({message:"Server error"})
+  }
+}

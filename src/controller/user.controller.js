@@ -26,7 +26,7 @@ export const createPost = async (req, res) => {
   try {
     console.log(req.body);
     console.log(req.file);
-
+    
     const file = await uploadFile(req.file.buffer);
 
     const post = await Post.create({
