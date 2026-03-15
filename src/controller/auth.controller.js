@@ -136,3 +136,8 @@ export const guestUser = async (req, res) => {
     return res.status(501).json({ message: "Server error" });
   }
 };
+
+
+export const loginGoogle = async (req,res)=>{
+  
+}
